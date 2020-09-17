@@ -6,7 +6,6 @@
  */
 
 import org.HdrHistogram.Histogram;
-import org.performancehints.ThreadHints;
 
 /**
  * A simple thread-to-thread communication latency test that measures and reports on the
@@ -50,7 +49,7 @@ public class SpinWaitTest {
             for (long i = 0; i < iterations; i++) {
                 while ((spinData & 0x1) == 1) {
                     // busy spin until ready to produce
-                    ThreadHints.onSpinWait();
+                    Thread.onSpinWait();
                 }
                 long currTime = System.nanoTime();
                 latencyHistogram.recordValue(currTime - prevTime);
@@ -73,7 +72,7 @@ public class SpinWaitTest {
             while (spinData >= 0) {
                 while ((spinData & 0x1) == 0) {
                     // busy spin until ready to consume
-                    ThreadHints.onSpinWait();
+                    Thread.onSpinWait();
                 }
                 spinData++; // consume
             }
